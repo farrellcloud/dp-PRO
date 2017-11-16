@@ -128,6 +128,7 @@
 			<if test="mobile != null">mobile = #{mobile}, </if>
 			<if test="status != null">status = #{status}, </if>
 			<if test="orgId != null">org_id = #{orgId}, </if>
+			<if test="remark != null">remark = #{remark}, </if>
 			gmt_modified = NOW()
 		</set>
 		where user_id = #{userId}
