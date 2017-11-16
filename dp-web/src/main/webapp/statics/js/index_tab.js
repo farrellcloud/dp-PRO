@@ -327,7 +327,7 @@
                     if(row.icon == null){
                         row.icon = "fa fa-circle-o";
                     }
-                    _html += "<a href='" + row.url + "' data-id='" + row.id + "' class='menuItem'><i class='" + row.icon + "'></i> " + row.name + "</a>";
+                    _html += "<a href='" + row.url + "' data-id='" + row.menuId + "' class='menuItem'><i class='" + row.icon + "'></i> " + row.name + "</a>";
                 }
                 _html += "</li>";
             });
@@ -354,7 +354,7 @@
                     if(row.icon == null){
                         row.icon = "fa fa-circle-o";
                     }
-                    _html += "<a href='" + row.url + "' data-id='" + row.id + "' class='menuItem'><i class='" + row.icon + "'></i> " + row.name + "</a>";
+                    _html += "<a href='" + row.url + "' data-id='" + row.menuId + "' class='menuItem'><i class='" + row.icon + "'></i> " + row.name + "</a>";
                 }
                 _html += "</li>";
             });
