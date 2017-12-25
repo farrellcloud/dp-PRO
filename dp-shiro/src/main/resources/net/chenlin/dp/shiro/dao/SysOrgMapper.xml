@@ -100,5 +100,7 @@
 			#{id}
 		</foreach>
 	</delete>
+
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 	
 </mapper>

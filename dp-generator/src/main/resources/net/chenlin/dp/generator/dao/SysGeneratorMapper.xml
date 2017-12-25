@@ -49,4 +49,6 @@
 			ordinal_position
 	</select>
 
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
 </mapper>

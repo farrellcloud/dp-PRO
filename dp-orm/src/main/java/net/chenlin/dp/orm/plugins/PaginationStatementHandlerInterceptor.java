@@ -13,7 +13,9 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.ReflectorFactory;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
@@ -35,20 +37,22 @@ import net.chenlin.dp.orm.dialect.DialectFactory;
  * @url www.chenlintech.com
  * @date 2017年8月11日 上午11:33:26
  */
-@Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
+@Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
 public class PaginationStatementHandlerInterceptor implements Interceptor {
 
     private final static Logger logger = LoggerFactory.getLogger(PaginationStatementHandlerInterceptor.class);
 
     private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
     private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
+    private static final ReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
+    @Override
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
         ParameterHandler parameterHandler = statementHandler.getParameterHandler();
         BoundSql boundSql = statementHandler.getBoundSql();
 
-        MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY);
+        MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
         RowBounds rowBounds = (RowBounds) metaStatementHandler.getValue("delegate.rowBounds");
         // 没有分页参数
         if (rowBounds == null || rowBounds == RowBounds.DEFAULT) {
@@ -76,10 +80,12 @@ public class PaginationStatementHandlerInterceptor implements Interceptor {
         return invocation.proceed();
     }
 
+    @Override
     public Object plugin(Object target) {
         return Plugin.wrap(target, this);
     }
 
+    @Override
     public void setProperties(Properties properties) {
     }
 
@@ -93,11 +99,6 @@ public class PaginationStatementHandlerInterceptor implements Interceptor {
      * @throws Exception
      */
     private int getTotal(ParameterHandler parameterHandler, Connection connection, String countSql) throws Exception {
-        // MetaObject metaStatementHandler =
-        // MetaObject.forObject(parameterHandler);
-        // Object parameterObject =
-        // metaStatementHandler.getValue("parameterObject");
-        // TODO 缓存具有相同SQL语句和参数的总数
         PreparedStatement prepareStatement = connection.prepareStatement(countSql);
         parameterHandler.setParameters(prepareStatement);
         ResultSet rs = prepareStatement.executeQuery();
