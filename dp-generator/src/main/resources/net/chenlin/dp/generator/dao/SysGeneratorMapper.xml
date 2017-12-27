@@ -3,7 +3,7 @@
 
 <mapper namespace="net.chenlin.dp.generator.dao.SysGeneratorMapper">
 	
-	<select id="listTable" resultType="TableEntity">
+	<select id="listTable" resultType="TableEntity" flushCache="true">
 		SELECT
 			table_name,
 			engine obj_name,

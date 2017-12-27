@@ -3,7 +3,7 @@
 
 <mapper namespace="${package}.${module}.dao.${className}Mapper">
 	
-	<select id="listForPage" resultType="${className}Entity">
+	<select id="listForPage" resultType="${className}Entity" flushCache="true">
 		SELECT
 #foreach($column in $columns)
 			`$column.columnName`#if($velocityCount != $columns.size()), 
