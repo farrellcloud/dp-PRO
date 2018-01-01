@@ -1,3 +1,4 @@
+# Java class files and maven compile output dirs #
 *.class
 target/
 
