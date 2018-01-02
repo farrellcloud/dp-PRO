@@ -1,7 +1,6 @@
 package net.chenlin.dp.shiro.session;
 
-import net.chenlin.dp.common.utils.IPUtils;
-import org.apache.commons.lang.StringUtils;
+import net.chenlin.dp.common.utils.IpUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
@@ -25,7 +24,7 @@ public class UserSessionFactory implements SessionFactory{
     }
 
     public static String getIpAddress(HttpServletRequest request) {
-        String ip = IPUtils.getIpAddr(request);
+        String ip = IpUtils.getIpAddr(request);
         return ip;
     }
 
