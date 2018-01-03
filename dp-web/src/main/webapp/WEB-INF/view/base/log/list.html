@@ -7,7 +7,7 @@
 <body>
 <div id="dpLTE" class="container-fluid" v-cloak>
 	<div class="row">
-		<div class="col-md-6 form-inline pull-left">
+		<div class="col-md-9 form-inline pull-left">
 			<div class="form-group">
 				<select class="form-control" v-model="type">
 					<option value="1">登录日志</option>
@@ -37,7 +37,7 @@
 			    <a class="btn btn-primary" @click="load"><i class="fa fa-search"></i>&nbsp;查询</a>
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-3">
 			<div class="btn-toolbar pull-right">
 				<div class="btn-group">
 		            <a v-if="hasPermission('sys:log:list')" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
