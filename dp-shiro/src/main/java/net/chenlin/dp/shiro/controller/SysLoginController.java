@@ -68,7 +68,6 @@ public class SysLoginController {
 	/**
 	 * 登录
 	 */
-	@SysLog("登录")
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public R login(String username, String password, String captcha)throws IOException {
@@ -97,9 +96,8 @@ public class SysLoginController {
 	}
 	
 	/**
-	 * 退出
+	 * 退出系统
 	 */
-	@SysLog("退出系统")
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout() {
 		ShiroUtils.logout();

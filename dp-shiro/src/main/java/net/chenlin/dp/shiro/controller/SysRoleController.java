@@ -101,7 +101,7 @@ public class SysRoleController extends AbstractController {
 	 * @param role
 	 * @return
 	 */
-	@SysLog("操作权限")
+	@SysLog(value = "操作权限", type = "AUTHORIZATION")
 	@RequestMapping("/authorize/opt")
 	public R updateRoleOptAuthorization(@RequestBody SysRoleEntity role) {
 		return sysRoleService.updateRoleOptAuthorization(role);
@@ -112,7 +112,7 @@ public class SysRoleController extends AbstractController {
 	 * @param role
 	 * @return
 	 */
-	@SysLog("数据权限")
+	@SysLog(value = "数据权限", type = "AUTHORIZATION")
 	@RequestMapping("/authorize/data")
 	public R updateRoleDataAuthorization(@RequestBody SysRoleEntity role) {
 		return sysRoleService.updateRoleDataAuthorization(role);

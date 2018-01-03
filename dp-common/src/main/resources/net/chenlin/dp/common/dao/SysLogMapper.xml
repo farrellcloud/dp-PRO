@@ -6,18 +6,26 @@
 	<select id="listForPage" resultType="SysLogEntity" flushCache="true">
 		SELECT
 			id,
+			type,
 			user_id,
 			username,
 			operation,
-			time,
 			method,
 			params,
 			ip,
+			result,
+			remark,
 			gmt_create
 		FROM
 			sys_log
 		<where>
-			<if test="username != null and username.trim() != ''">
+			<if test=" type != null ">
+				type = #{type}
+			</if>
+			<if test=" startDate != null and startDate != '' and endDate != null and endDate != '' ">
+				AND DATE_FORMAT( gmt_create, '%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+			</if>
+			<if test=" username != null and username.trim() != '' ">
 				AND username LIKE concat('%',#{username},'%')
 				OR operation LIKE concat('%',#{username},'%')
 			</if>
@@ -28,23 +36,27 @@
 	
 	<insert id="save">
 		INSERT INTO sys_log (
+			type,
 			user_id,
 			username,
 			operation,
-			time,
 			method,
 			params,
 			ip,
+			result,
+			remark,
 			gmt_create
 		)
 		VALUES (
+			#{type},
 			#{userId},
 			#{username}, 
 			#{operation},
-			#{time}, 
 			#{method}, 
 			#{params}, 
-			#{ip}, 
+			#{ip},
+			#{result},
+			#{remark},
 			NOW()
 		)
 	</insert>
