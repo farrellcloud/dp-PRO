@@ -10,7 +10,7 @@
 
 	<!-- 会话管理器 -->
 	<bean id="sessionManager" class="net.chenlin.dp.shiro.session.UserSessionManager">
-		<property name="globalSessionTimeout" value="3600000"></property>
+		<property name="globalSessionTimeout" value="60000"></property>
 		<property name="sessionDAO" ref="sessionDAO"/>
 		<property name="sessionValidationSchedulerEnabled" value="true"></property>
 		<property name="sessionIdUrlRewritingEnabled" value="false"></property>
@@ -39,6 +39,7 @@
 	<bean id="chainDefinitionSectionMetaSource" class="net.chenlin.dp.shiro.security.ChainDefinitionSectionMetaSource">
 		<property name="filterChainDefinitions">
 			<value>
+				/favicon.ico=anon
 				/statics/**=anon
                 /WEB-INF/view/error/**=anon
 	        	/login.html=anon
