@@ -65,8 +65,7 @@ $.fn.bootstrapTableEx = function(opt){
 		smartDisplay: false,
 		pageSize: 10,
 		pageList: [10, 20, 30, 40, 50],
-		paginationPreText: '上一页',
-		paginationNextText: '下一页',
+        paginationLoop: false,
 		sidePagination: 'server',
 		queryParamsType : null,
 		columns: []
