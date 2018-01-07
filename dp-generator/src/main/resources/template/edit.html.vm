@@ -1,10 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>编辑-${comments}</title>
-#set($header='#parse("include/header.html")')
-#set($footer='#parse("include/footer.html")')
-$header
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/header_css::header('编辑-${comments}')"></head>
 </head>
 <body>
 	<div id="dpLTE" class="container-fluid" v-cloak>
@@ -21,8 +17,7 @@ $header
 #end
 		</table>
 	</div>
-	$footer
-	<script
-		src="${rc.contextPath}/statics/js/${viewPath}/edit.js?_${date.systemTime}"></script>
+    <div th:include="include/footer_js::footer"></div>
+    <script th:src="@{/statics/js/${viewPath}/edit.js}"></script>
 </body>
 </html>

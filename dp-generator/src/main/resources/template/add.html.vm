@@ -1,11 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>新增-${comments}</title>
-#set($header='#parse("include/header.html")')
-#set($footer='#parse("include/footer.html")')
-$header
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/header_css::header('新增-${comments}')"></head>
 <body>
 	<div id="dpLTE" class="container-fluid" v-cloak>
 		<table class="form" id="form">
@@ -21,8 +16,7 @@ $header
 #end
 		</table>
 	</div>
-	$footer
-	<script
-		src="${rc.contextPath}/statics/js/${viewPath}/add.js?_${date.systemTime}"></script>
+    <div th:include="include/footer_js::footer"></div>
+    <script th:src="@{/statics/js/${viewPath}/add.js}"></script>
 </body>
 </html>

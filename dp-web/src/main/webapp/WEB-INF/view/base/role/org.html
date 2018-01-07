@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>所属机构</title>
-#parse("include/header.html")
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/header_css::header('所属机构')"></head>
 <body>
 	<div id="dpLTE" class="container-fluid" v-cloak>
 		<ul id="orgTree" class="ztree"></ul>
 	</div>
-	#parse("include/footer.html")
+	<div th:include="include/footer_js::footer"></div>
 	<script type="text/javascript">
 	var setting = {
 		data : {

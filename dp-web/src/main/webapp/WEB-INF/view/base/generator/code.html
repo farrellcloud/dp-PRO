@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>生成代码-代码生成器</title>
-#parse("include/header.html")
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/header_css :: header('生成代码-代码生成器')"></head>
 <body>
 	<div id="dpLTE" class="container-fluid" v-cloak>
 		<div class="alert alert-success" role="alert" style="margin-top: 10px;">
@@ -57,8 +54,7 @@
 			</tr>
 		</table>
 	</div>
-	#parse("include/footer.html")
-	<script
-		src="${rc.contextPath}/statics/js/base/generator/code.js?_${date.systemTime}"></script>
+	<div th:include="include/footer_js :: footer"></div>
+	<script th:src="@{/statics/js/base/generator/code.js}"></script>
 </body>
 </html>
