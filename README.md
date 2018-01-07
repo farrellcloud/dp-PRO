@@ -25,7 +25,7 @@
 - 缓存框架：Ehcache、Redis
 - 会话管理：Spring-session
 - 安全框架：Shiro
-- 模板框架：velocity（支持freemarker、jsp等其他自定义视图）
+- 模板框架：thymeleaf【视图解析器】、velocity【代码生成器】（支持freemarker、jsp等其他自定义视图）
 - 主页框架：adminLTE(Bootstrap)
 - JS框架：vue.js
 - 表格插件：bootstrap-table
