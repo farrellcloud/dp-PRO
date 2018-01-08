@@ -14,6 +14,10 @@ var vm = new Vue({
 			if (!$('#form').Validform()) {
 				return false;
 			}
+			if (vm.generator.requestMapping == vm.generator.viewPath) {
+                dialogMsg('请求地址和页面模块地址不能相同！');
+                return false;
+            }
 			toUrl('sys/generator/code?tables=' + vm.generator.tables
 					+ '&module=' + vm.generator.module + '&requestMapping='
 					+ vm.generator.requestMapping + '&viewPath='
