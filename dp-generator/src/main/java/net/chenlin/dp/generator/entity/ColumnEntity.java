@@ -121,5 +121,19 @@ public class ColumnEntity implements Serializable {
 	public void setColumnKey(String columnKey) {
 		this.columnKey = columnKey;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ColumnEntity{" +
+				"columnName='" + columnName + '\'' +
+				", dataType='" + dataType + '\'' +
+				", columnComment='" + columnComment + '\'' +
+				", fieldName='" + fieldName + '\'' +
+				", methodName='" + methodName + '\'' +
+				", fieldType='" + fieldType + '\'' +
+				", columnKey='" + columnKey + '\'' +
+				", extra='" + extra + '\'' +
+				'}';
+	}
+
 }

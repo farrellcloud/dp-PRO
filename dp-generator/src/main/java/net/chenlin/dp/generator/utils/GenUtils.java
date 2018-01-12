@@ -12,6 +12,9 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.sun.tools.javah.Gen;
+import net.chenlin.dp.common.utils.PropertiesUtils;
+import net.chenlin.dp.generator.constant.GenConstant;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -39,7 +42,7 @@ import net.chenlin.dp.generator.entity.TableEntity;
 public class GenUtils {
 
 	public static List<String> getTemplates() {
-		List<String> templates = new ArrayList<String>();
+		List<String> templates = new ArrayList<>();
 		templates.add("template/Entity.java.vm");
 		templates.add("template/Mapper.java.vm");
 		templates.add("template/Mapper.xml.vm");
@@ -63,22 +66,28 @@ public class GenUtils {
 	 */
 	public static void generatorCode(TableEntity table, List<ColumnEntity> columns, GeneratorParamEntity params,
 			ZipOutputStream zip) {
-		// 配置信息
-		Configuration config = getConfig();
 
 		// 表名转换成Java类名
-		String className = tableToJava(table.getTableName(), config.getString("tablePrefix"));// sys_user -> SysUser
-		table.setClassName(className);// SysUser
-		table.setObjName(StringUtils.uncapitalize(className));// sysUser
+
+		// sys_user -> SysUser
+		String className = tableToJava(table.getTableName(), PropertiesUtils.getInstance("generator").get("tablePrefix"));
+		// SysUser
+		table.setClassName(className);
+		// sysUser
+		table.setObjName(StringUtils.uncapitalize(className));
 
 		// 列信息
 		for (ColumnEntity column : columns) {
 			// 列名转换，java属性名及对应方法名
-			String columnName = columnToJava(column.getColumnName());// user_id -> UserId
-			column.setFieldName(StringUtils.uncapitalize(columnName));// userId
-			column.setMethodName(columnName);// UserId
+
+			// user_id -> UserId
+			String columnName = columnToJava(column.getColumnName());
+			// userId
+			column.setFieldName(StringUtils.uncapitalize(columnName));
+			// UserId
+			column.setMethodName(columnName);
 			// 列数据类型转换
-			String fieldType = config.getString(column.getDataType(), "unknowType");
+			String fieldType = PropertiesUtils.getInstance("generator").get(column.getDataType());
 			column.setFieldType(fieldType);
 			// 主键判断
 			if ("PRI".equals(column.getColumnKey()) && table.getPk() == null) {
@@ -98,7 +107,7 @@ public class GenUtils {
 		Velocity.init(prop);
 
 		// 封装模板数据
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(16);
 		map.put("tableName", table.getTableName());
 		map.put("comments", table.getTableComment());
 		map.put("pk", table.getPk());
@@ -109,11 +118,11 @@ public class GenUtils {
 		map.put("viewPath", params.getViewPath());
 		map.put("authKey", urlToAuthKey(params.getRequestMapping()));
 		map.put("columns", table.getColumns());
-		map.put("package", config.getString("package"));
+		map.put("package", PropertiesUtils.getInstance("generator").get("package"));
 		map.put("module", params.getModule());
-		map.put("author", config.getString("author"));
-		map.put("email", config.getString("email"));
-		map.put("url", config.getString("url"));
+		map.put("author", PropertiesUtils.getInstance("generator").get("author"));
+		map.put("email", PropertiesUtils.getInstance("generator").get("email"));
+		map.put("url", PropertiesUtils.getInstance("generator").get("url"));
 		map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_CHN_PATTERN));
 		VelocityContext context = new VelocityContext(map);
 
@@ -129,7 +138,7 @@ public class GenUtils {
 				// 添加到zip
 				if ("1".equals(params.getType())) {
 					zip.putNextEntry(new ZipEntry(getFileName(template, table.getClassName(), params.getModule(),
-							params.getFunctionCode(), config.getString("package"))));
+							params.getFunctionCode(), PropertiesUtils.getInstance("generator").get("package"))));
 				} else {
 					zip.putNextEntry(new ZipEntry(getFileName(template, table.getClassName())));
 				}
@@ -170,17 +179,6 @@ public class GenUtils {
 	}
 
 	/**
-	 * 获取配置信息
-	 */
-	public static Configuration getConfig() {
-		try {
-			return new PropertiesConfiguration("generator.properties");
-		} catch (ConfigurationException e) {
-			throw new RRException("获取配置文件失败，", e);
-		}
-	}
-
-	/**
 	 * 获取文件名，不带包名
 	 * 
 	 * @param template
@@ -188,64 +186,64 @@ public class GenUtils {
 	 * @return
 	 */
 	public static String getFileName(String template, String className) {
-		String packagePath = "java" + File.separator;
-		if (template.contains("Entity.java.vm")) {
+		String packagePath = "java/";
+		if (template.contains(GenConstant.JAVA_ENTITY)) {
 			return packagePath + className + "Entity.java";
 		}
 
-		if (template.contains("Mapper.java.vm")) {
+		if (template.contains(GenConstant.JAVA_MAPPER)) {
 			return packagePath + className + "Mapper.java";
 		}
 
-		if (template.contains("Mapper.xml.vm")) {
+		if (template.contains(GenConstant.XML_MAPPER)) {
 			return packagePath + className + "Mapper.xml";
 		}
 
-		if (template.contains("Manager.java.vm")) {
+		if (template.contains(GenConstant.JAVA_MANAGER)) {
 			return packagePath + className + "Manager.java";
 		}
 
-		if (template.contains("ManagerImpl.java.vm")) {
+		if (template.contains(GenConstant.JAVA_MANAGER_IMPL)) {
 			return packagePath + className + "ManagerImpl.java";
 		}
 
-		if (template.contains("Service.java.vm")) {
+		if (template.contains(GenConstant.JAVA_SERVICE)) {
 			return packagePath + className + "Service.java";
 		}
 
-		if (template.contains("ServiceImpl.java.vm")) {
+		if (template.contains(GenConstant.JAVA_SERVICE_IMPL)) {
 			return packagePath + className + "ServiceImpl.java";
 		}
 
-		if (template.contains("Controller.java.vm")) {
+		if (template.contains(GenConstant.JAVA_CONTROLLER)) {
 			return packagePath + className + "Controller.java";
 		}
 
-		if (template.contains("list.html.vm")) {
-			return "view" + File.separator + "list.html";
+		if (template.contains(GenConstant.HTML_LIST)) {
+			return "view/list.html";
 		}
 
-		if (template.contains("add.html.vm")) {
-			return "view" + File.separator + "add.html";
+		if (template.contains(GenConstant.HTML_ADD)) {
+			return "view/add.html";
 		}
 
-		if (template.contains("edit.html.vm")) {
-			return "view" + File.separator + "edit.html";
+		if (template.contains(GenConstant.HTML_EDIT)) {
+			return "view/edit.html";
 		}
 
-		if (template.contains("list.js.vm")) {
-			return "js" + File.separator + "list.js";
+		if (template.contains(GenConstant.JS_LIST)) {
+			return "js/list.js";
 		}
 
-		if (template.contains("add.js.vm")) {
-			return "js" + File.separator + "add.js";
+		if (template.contains(GenConstant.JS_ADD)) {
+			return "js/add.js";
 		}
 
-		if (template.contains("edit.js.vm")) {
-			return "js" + File.separator + "edit.js";
+		if (template.contains(GenConstant.JS_EDIT)) {
+			return "js/edit.js";
 		}
 
-		if (template.contains("menu.sql.vm")) {
+		if (template.contains(GenConstant.SQL_MENU)) {
 			return className.toLowerCase() + "_menu.sql";
 		}
 
@@ -262,63 +260,63 @@ public class GenUtils {
 			packagePath += packageName.replace(".", File.separator) + File.separator + module + File.separator;
 		}
 
-		if (template.contains("Entity.java.vm")) {
+		if (template.contains(GenConstant.JAVA_ENTITY)) {
 			return packagePath + "entity" + File.separator + className + "Entity.java";
 		}
 
-		if (template.contains("Mapper.java.vm")) {
+		if (template.contains(GenConstant.JAVA_MAPPER)) {
 			return packagePath + "dao" + File.separator + className + "Mapper.java";
 		}
 
-		if (template.contains("Mapper.xml.vm")) {
+		if (template.contains(GenConstant.XML_MAPPER)) {
 			return packagePath + "dao" + File.separator + className + "Mapper.xml";
 		}
 
-		if (template.contains("Manager.java.vm")) {
+		if (template.contains(GenConstant.JAVA_MANAGER)) {
 			return packagePath + "manager" + File.separator + className + "Manager.java";
 		}
 
-		if (template.contains("ManagerImpl.java.vm")) {
+		if (template.contains(GenConstant.JAVA_MANAGER_IMPL)) {
 			return packagePath + "manager" + File.separator + "impl" + File.separator + className + "ManagerImpl.java";
 		}
 
-		if (template.contains("Service.java.vm")) {
+		if (template.contains(GenConstant.JAVA_SERVICE)) {
 			return packagePath + "service" + File.separator + className + "Service.java";
 		}
 
-		if (template.contains("ServiceImpl.java.vm")) {
+		if (template.contains(GenConstant.JAVA_SERVICE_IMPL)) {
 			return packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
 		}
 
-		if (template.contains("Controller.java.vm")) {
+		if (template.contains(GenConstant.JAVA_CONTROLLER)) {
 			return packagePath + "controller" + File.separator + className + "Controller.java";
 		}
 
-		if (template.contains("list.html.vm")) {
+		if (template.contains(GenConstant.HTML_LIST)) {
 			return "view" + File.separator + functionCode + File.separator + "list.html";
 		}
 
-		if (template.contains("add.html.vm")) {
+		if (template.contains(GenConstant.HTML_ADD)) {
 			return "view" + File.separator + functionCode + File.separator + "add.html";
 		}
 
-		if (template.contains("edit.html.vm")) {
+		if (template.contains(GenConstant.HTML_EDIT)) {
 			return "view" + File.separator + functionCode + File.separator + "edit.html";
 		}
 
-		if (template.contains("list.js.vm")) {
+		if (template.contains(GenConstant.JS_LIST)) {
 			return "js" + File.separator + functionCode + File.separator + "list.js";
 		}
 
-		if (template.contains("add.js.vm")) {
+		if (template.contains(GenConstant.JS_ADD)) {
 			return "js" + File.separator + functionCode + File.separator + "add.js";
 		}
 
-		if (template.contains("edit.js.vm")) {
+		if (template.contains(GenConstant.JS_EDIT)) {
 			return "js" + File.separator + functionCode + File.separator + "edit.js";
 		}
 
-		if (template.contains("menu.sql.vm")) {
+		if (template.contains(GenConstant.SQL_MENU)) {
 			return className.toLowerCase() + "_menu.sql";
 		}
 
