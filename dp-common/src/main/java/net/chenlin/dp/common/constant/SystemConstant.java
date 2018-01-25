@@ -57,7 +57,7 @@ public class SystemConstant {
 
 		private int value;
 
-		private LogType(int value) {
+		LogType(int value) {
 			this.value = value;
 		}
 
@@ -91,7 +91,7 @@ public class SystemConstant {
 
         private int value;
 
-        private MenuType(int value) {
+        MenuType(int value) {
             this.value = value;
         }
 
@@ -120,7 +120,7 @@ public class SystemConstant {
 
         private int value;
 
-        private ScheduleStatus(int value) {
+        ScheduleStatus(int value) {
             this.value = value;
         }
         
@@ -151,7 +151,7 @@ public class SystemConstant {
     	
     	private int value;
     	
-    	private MacroType(int value) {
+    	MacroType(int value) {
             this.value = value;
         }
         
@@ -193,7 +193,7 @@ public class SystemConstant {
     	
     	private int value;
     	
-    	private StatusType(int value) {
+    	StatusType(int value) {
             this.value = value;
         }
         
