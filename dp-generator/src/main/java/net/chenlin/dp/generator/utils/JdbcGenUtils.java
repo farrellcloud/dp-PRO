@@ -131,7 +131,7 @@ public class JdbcGenUtils {
             System.out.println("============ start table: " + tableEntity.getTableName() + " ================");
 
             for (String template : GenUtils.getTemplates()) {
-                String filePath = getFileName(template, javaProject, webProject, javaModule, webModule, table.getClassName());
+                String filePath = getFileName(template, javaProject, webProject, javaModule, webModule, tableEntity.getClassName());
                 String templatePath = JdbcUtils.class.getResource("/"+template).getPath().replaceFirst("/", "");
                 File dstDir = new File(VelocityUtils.getPath(filePath));
                 //文件夹不存在创建文件夹
