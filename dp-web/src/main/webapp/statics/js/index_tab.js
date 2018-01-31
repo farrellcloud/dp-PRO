@@ -480,15 +480,19 @@ var vm = new Vue({
 
 //菜单滚动条自适应
 function setScroll() {
-    $("#sidebar-menu").slimScroll({
-        height: $(this).height() - 50,
-        alwaysVisible: false,
-    });
-    $(window).on("resize", function () {
+    if (!$("body").hasClass("sidebar-collapse")) {
         $("#sidebar-menu").slimScroll({
             height: $(this).height() - 50,
             alwaysVisible: false,
         });
+    }
+    $(window).on("resize", function() {
+        if (!$("body").hasClass("sidebar-collapse")) {
+            $("#sidebar-menu").slimScroll({
+                height: $(this).height() - 50,
+                alwaysVisible: false,
+            });
+        }
     });
 }
 
