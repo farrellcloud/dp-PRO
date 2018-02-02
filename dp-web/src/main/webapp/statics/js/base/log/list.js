@@ -12,6 +12,20 @@ function initialPage() {
 	$(window).resize(function() {
 		$('#dataGrid').bootstrapTable('resetView', {height: $(window).height()-54});
 	});
+    //日期选择
+    laydate.render({
+        elem: '#dateRange',
+        range: true,
+        theme: '#3C8DBC',
+        eventElem: '#dateRange',
+        trigger: 'click',
+        done: function(value, date, endDate){
+            vm.dateRangeSelect(0);
+            vm.dateRange = value;
+            vm.startDate = date.year + '-' + date.month + '-' + date.date;
+            vm.endDate = endDate.year + '-' + endDate.month + '-' + endDate.date;
+        }
+    });
 }
 
 function getGrid() {
@@ -133,19 +147,5 @@ var vm = new Vue({
 		    	}
 			});
 		}
-	},
-    created : function() {
-        //日期选择
-        laydate.render({
-            elem: '#dateRange',
-            range: true,
-            theme: '#3C8DBC',
-            done: function(value, date, endDate){
-                vm.dateRangeSelect(0);
-                vm.dateRange = value;
-                vm.startDate = date.year + '-' + date.month + '-' + date.date;
-                vm.endDate = endDate.year + '-' + endDate.month + '-' + endDate.date;
-            }
-        });
-    }
+	}
 })
