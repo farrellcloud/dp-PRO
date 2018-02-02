@@ -18,6 +18,9 @@
 - 支持分布式session管理，能够集群部署
 - 支持数据库读写分离，动态切换数据源
 - 支持Mybatis-Ehcache二级缓存
+### 项目拓展
+- [基于系统参数管理实现动态select控件](https://my.oschina.net/zhouchenglin/blog/1615653)
+- [基于ajaxfileupload.js实现文件上传](https://my.oschina.net/zhouchenglin/blog/1615214)
 
 ### 技术方案
 - 核心框架：Spring
