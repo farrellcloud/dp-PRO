@@ -22,7 +22,7 @@ public class JdbcGenUtils {
     public static void main(String[] args) throws Exception {
 
         String jdbcDriver = "com.mysql.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://192.168.180.130:3306/dp-pro?useUnicode=true&characterEncoding=utf-8";
+        String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/dp-pro?useUnicode=true&characterEncoding=utf-8";
         String jdbcUsername = "root";
         String jdbcPassword = "root";
 
@@ -47,6 +47,14 @@ public class JdbcGenUtils {
                                      String webProject,
                                      String javaModule,
                                      String webModule) throws Exception {
+
+        String rootPath = "";
+        String osName = "os.name";
+        String osWindows = "win";
+        if(!System.getProperty(osName).toLowerCase().startsWith(osWindows)) {
+            rootPath = "/";
+        }
+
         String tableSql = "SELECT table_name, table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = (SELECT DATABASE()) AND table_name LIKE '" + tablePrefix + "_%';";
 
         JdbcUtils jdbcUtils = new JdbcUtils(jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword);
@@ -104,8 +112,8 @@ public class JdbcGenUtils {
         }
 
         String projectPath = getProjectPath(javaProject);
-        System.out.println("===>>>java generation path:" + projectPath);
-        System.out.println("===>>>web generation path:" + getProjectPath(webProject) + "\n");
+        System.out.println("===>>>java generation path:" + rootPath + projectPath);
+        System.out.println("===>>>web generation path:" + rootPath + getProjectPath(webProject) + "\n");
         Map<String, Object> map = null;
         for (TableEntity tableEntity : tables) {
             // 封装模板数据
@@ -131,8 +139,8 @@ public class JdbcGenUtils {
             System.out.println("============ start table: " + tableEntity.getTableName() + " ================");
 
             for (String template : GenUtils.getTemplates()) {
-                String filePath = getFileName(template, javaProject, webProject, javaModule, webModule, tableEntity.getClassName());
-                String templatePath = JdbcUtils.class.getResource("/"+template).getPath().replaceFirst("/", "");
+                String filePath = getFileName(template, javaProject, webProject, javaModule, webModule, tableEntity.getClassName(), rootPath);
+                String templatePath = rootPath + JdbcUtils.class.getResource("/"+template).getPath().replaceFirst("/", "");
                 File dstDir = new File(VelocityUtils.getPath(filePath));
                 //文件夹不存在创建文件夹
                 if(!dstDir.exists()){
@@ -152,10 +160,10 @@ public class JdbcGenUtils {
     }
 
 
-    public static String getFileName(String template, String javaProject, String webProject, String javaModule, String webModule, String className) {
-        String packagePath = getProjectPath(javaProject) + "/src/main/java/" + PropertiesUtils.getInstance("generator").get("package").replace(".","/") + "/" + javaModule + "/";
-        String resourcePath = getProjectPath(javaProject) + "/src/main/resources/" + PropertiesUtils.getInstance("generator").get("package").replace(".","/") + "/" + javaModule + "/";
-        String webPath = getProjectPath(webProject) + "/src/main/webapp/";
+    public static String getFileName(String template, String javaProject, String webProject, String javaModule, String webModule, String className, String rootPath) {
+        String packagePath = rootPath + getProjectPath(javaProject) + "/src/main/java/" + PropertiesUtils.getInstance("generator").get("package").replace(".","/") + "/" + javaModule + "/";
+        String resourcePath = rootPath + getProjectPath(javaProject) + "/src/main/resources/" + PropertiesUtils.getInstance("generator").get("package").replace(".","/") + "/" + javaModule + "/";
+        String webPath = rootPath + getProjectPath(webProject) + "/src/main/webapp/";
         if (template.contains(GenConstant.JAVA_ENTITY)) {
             return packagePath + "entity/" + className + "Entity.java";
         }
@@ -213,7 +221,7 @@ public class JdbcGenUtils {
         }
 
         if (template.contains(GenConstant.SQL_MENU)) {
-            return getProjectPath(javaProject) + "/src/main/resources/sqls/" + className.toLowerCase() + "_menu.sql";
+            return rootPath + getProjectPath(javaProject) + "/src/main/resources/sqls/" + className.toLowerCase() + "_menu.sql";
         }
 
         return null;
