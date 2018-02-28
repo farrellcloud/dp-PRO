@@ -11,6 +11,15 @@
 		WHERE
 			parent_id = #{value}
 	</select>
+
+	<select id="listOrgChildren" resultType="long">
+		SELECT
+			org_id
+		FROM
+			sys_org
+		WHERE
+			parent_id = #{value}
+	</select>
 	
 	<select id="list" resultType="SysOrgEntity">
 		SELECT

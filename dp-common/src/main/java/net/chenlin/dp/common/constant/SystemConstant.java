@@ -26,6 +26,11 @@ public class SystemConstant {
 	public static final int UNAUTHORIZATION_CODE = 401;
 
 	/**
+	 * 数据权限sql
+	 */
+	public static final String DATA_PERMISSION = "data_permission_sql";
+
+	/**
 	 * 日志类型
 	 */
 	public enum LogType {

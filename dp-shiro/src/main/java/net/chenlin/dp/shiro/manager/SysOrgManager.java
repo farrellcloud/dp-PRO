@@ -2,6 +2,7 @@ package net.chenlin.dp.shiro.manager;
 
 import java.util.List;
 
+import net.chenlin.dp.common.entity.Query;
 import net.chenlin.dp.shiro.entity.SysOrgEntity;
 
 /**
@@ -25,5 +26,9 @@ public interface SysOrgManager {
 	int bactchRemoveOrg(Long[] id);
 	
 	boolean hasChildren(Long[] id);
+
+	List<Long> listOrgChildren(Long parentId);
+
+	List<Long> getAllOrgChildren(Long parentId);
 	
 }

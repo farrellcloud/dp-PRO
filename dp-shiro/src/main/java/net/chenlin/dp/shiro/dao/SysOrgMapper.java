@@ -5,6 +5,8 @@ import org.mybatis.spring.annotation.MapperScan;
 import net.chenlin.dp.common.dao.BaseMapper;
 import net.chenlin.dp.shiro.entity.SysOrgEntity;
 
+import java.util.List;
+
 /**
  * 组织架构
  *
@@ -17,5 +19,7 @@ import net.chenlin.dp.shiro.entity.SysOrgEntity;
 public interface SysOrgMapper extends BaseMapper<SysOrgEntity> {
 
 	int countOrgChildren(Long parentId);
+
+	List<Long> listOrgChildren(Long parentId);
 	
 }

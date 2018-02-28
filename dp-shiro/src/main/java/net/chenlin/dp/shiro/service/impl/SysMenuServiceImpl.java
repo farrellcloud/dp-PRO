@@ -3,6 +3,7 @@ package net.chenlin.dp.shiro.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import net.chenlin.dp.common.annotation.DataPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return R.ok().put("menuList", menuList);
 	}
 
+	@DataPermission(alias = "m", sub = true)
 	@Override
 	public List<SysMenuEntity> listMenu(Map<String, Object> params) {
 		Query query = new Query(params);

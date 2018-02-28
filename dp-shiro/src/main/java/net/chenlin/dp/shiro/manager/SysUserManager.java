@@ -42,5 +42,7 @@ public interface SysUserManager {
 	int updatePswd(SysUserEntity user);
 	
 	SysUserEntity getUserById(Long userId);
+
+	List<Long> listAllOrgId(Long userId);
 	
 }

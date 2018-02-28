@@ -146,4 +146,9 @@ public class SysUserManagerImpl implements SysUserManager {
 		return sysUserMapper.getObjectById(userId);
 	}
 
+	@Override
+	public List<Long> listAllOrgId(Long userId) {
+		return sysUserMapper.listAllOrgId(userId);
+	}
+
 }

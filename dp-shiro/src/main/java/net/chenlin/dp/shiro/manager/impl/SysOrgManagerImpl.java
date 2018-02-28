@@ -1,7 +1,10 @@
 package net.chenlin.dp.shiro.manager.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.chenlin.dp.common.annotation.DataPermission;
+import net.chenlin.dp.common.entity.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +30,7 @@ public class SysOrgManagerImpl implements SysOrgManager {
 	
 	@Autowired
 	private SysRoleOrgMapper sysRoleOrgMapper;
-	
+
 	@Override
 	public List<SysOrgEntity> listOrg() {
 		return sysOrgMapper.list();
@@ -64,6 +67,34 @@ public class SysOrgManagerImpl implements SysOrgManager {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<Long> listOrgChildren(Long parentId) {
+		return sysOrgMapper.listOrgChildren(parentId);
+	}
+
+	@Override
+	public List<Long> getAllOrgChildren(Long parentId) {
+		List<Long> orgIds = new ArrayList<>();
+		List<Long> parentIds = listOrgChildren(parentId);
+		recursionOrgChildren(parentIds, orgIds);
+		return orgIds;
+	}
+
+	/**
+	 * 递归查询子机构
+	 * @param parentIds
+	 * @param result
+	 */
+	public void recursionOrgChildren(List<Long> parentIds, List<Long> result) {
+		for (Long parentId : parentIds) {
+			List<Long> ids = listOrgChildren(parentId);
+			if (ids.size() > 0) {
+				recursionOrgChildren(ids, result);
+			}
+			result.add(parentId);
+		}
 	}
 
 }
