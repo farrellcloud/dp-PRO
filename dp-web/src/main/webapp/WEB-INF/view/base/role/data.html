@@ -34,13 +34,22 @@
 		},
 		methods : {
 			getOrg : function(menuId) {
-				$.get('../../sys/org/list?_' + $.now(), function(r) {
-					ztree = $.fn.zTree
-							.init($("#orgTree"), setting, r);
-					ztree.expandAll(true);
-				})
+                $.ajax({
+                    type: 'get',
+                    async: false,
+                    contentType : 'application/json',
+                    url: '../../sys/org/list?_' + $.now(),
+                    data: null,
+                    success: function(r) {
+                        ztree = $.fn.zTree
+                            .init($("#orgTree"), setting, r);
+                        ztree.expandAll(true);
+                    },
+                    dataType: 'json'
+                });
 			},
 			setForm: function() {
+                this.getOrg();
 				$.SetForm({
 					url: '../../sys/role/info',
 			    	param: vm.role.roleId,
@@ -70,9 +79,6 @@
 			    	}
 			    });
 			}
-		},
-		created : function() {
-			this.getOrg();
 		}
 	})
 	</script>
