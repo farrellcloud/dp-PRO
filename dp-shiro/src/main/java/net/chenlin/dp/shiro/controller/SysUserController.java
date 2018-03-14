@@ -114,8 +114,10 @@ public class SysUserController extends AbstractController {
 	@RequestMapping("/updatePswd")
 	public R updatePswdByUser(String pswd, String newPswd) {
 		SysUserEntity user = getUser();
-		user.setPassword(pswd);//原密码
-		user.setEmail(newPswd);//邮箱临时存储新密码
+		//原密码
+		user.setPassword(pswd);
+		//邮箱临时存储新密码
+		user.setEmail(newPswd);
 		return sysUserService.updatePswdByUser(user);
 	}
 	
